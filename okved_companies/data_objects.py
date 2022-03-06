@@ -1,0 +1,13 @@
+from typing import List
+from pydantic import BaseModel, Field
+
+
+class OkvedCompaniesTask(BaseModel):
+    task_key: str = ...
+    url: str = ...
+
+
+class OkvedCompaniesResult(BaseModel):
+    raw_response: str = ...
+    is_error: bool = ...
+    companies_list: List[str] = Field([], nullable=True)

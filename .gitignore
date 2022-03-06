@@ -131,3 +131,4 @@ dmypy.json
 # наши кастомные вещи
 **/logs/
 .idea/
+resources/
