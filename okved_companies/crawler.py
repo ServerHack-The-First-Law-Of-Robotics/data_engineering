@@ -48,7 +48,7 @@ class OkvedCompaniesCrawler:
 
 
 if __name__ == "__main__":
-    save_pth = "data/okved_259400_companies_not_only_main_okved.json"
+    save_pth = "data/okved_companies/okved_259400_companies_not_only_main_okved.json"
     already_parsed = read_results_from_json(save_pth)
 
     set_up_logging()
