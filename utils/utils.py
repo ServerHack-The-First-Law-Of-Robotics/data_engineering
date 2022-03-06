@@ -1,6 +1,7 @@
 from logging import getLogger, basicConfig, FileHandler, StreamHandler
 from sys import stderr
 from os.path import isdir, join
+from json import load
 from os import makedirs
 
 from settings import LOGLEVEL
@@ -23,3 +24,13 @@ def set_up_logging():
             getLogger().addHandler(handler)
     else:
         logger.warning(f"Неподдерживаемый LOGLEVEL: {LOGLEVEL}")
+
+
+def read_proxies(path: str):
+    with open(path) as f:
+        proxies = load(f)
+
+    for idx, proxy in enumerate(proxies):
+        formatted = f"http://{proxy}"
+        proxies[idx] = formatted
+    return proxies

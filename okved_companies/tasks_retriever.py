@@ -10,7 +10,8 @@ class OkvedCompaniesTaskRetriever:
             self,
             base_url: str,
             n_pages: int,
-            storage: OkvedCompaniesStorage
+            storage: OkvedCompaniesStorage,
+            okved: str
     ):
         self.tasks: List[OkvedCompaniesTask] = []
 
@@ -26,7 +27,8 @@ class OkvedCompaniesTaskRetriever:
 
             task = OkvedCompaniesTask(
                 task_key=task_key,
-                url=url
+                url=url,
+                okved=okved
             )
             self.tasks.append(task)
 
