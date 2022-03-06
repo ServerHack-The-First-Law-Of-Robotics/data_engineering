@@ -1,9 +1,10 @@
 from typing import List, Optional
 from pydantic import BaseModel, Field
 
+from base.data_objects import Task, Result
 
-class OkvedCompaniesTask(BaseModel):
-    task_key: str = ...
+
+class OkvedCompaniesTask(Task):
     url: str = ...
     okved: str = ...
 
@@ -13,10 +14,6 @@ class RusprofileCompanyData(BaseModel):
     ogrn: Optional[str] = Field(None, nullable=True)
 
 
-class OkvedCompaniesResult(BaseModel):
-    raw_response: str = ...
-    is_error: bool = ...
+class OkvedCompaniesResult(Result):
     okved: str = ...
-    status_code: int = Field(200, nullable=False)
     companies_list: List[RusprofileCompanyData] = Field([], nullable=True)
-

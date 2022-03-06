@@ -1,3 +1,4 @@
 aiohttp[speedups]==3.8.1
 pydantic==1.9.0
 beautifulsoup4==4.10.0
+requests==2.27.1
