@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# наши кастомные вещи
+**/logs/
+.idea/
+resources/
+data/
