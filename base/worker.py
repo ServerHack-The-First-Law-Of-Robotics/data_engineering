@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from logging import getLogger
 from aiohttp import ClientSession
 from asyncio import sleep
+from uuid import uuid4
 
 from .data_objects import Task, Result
 from .storage import Storage
@@ -18,14 +19,13 @@ class Worker(ABC):
             storage: Storage,
             task_retriever: TaskRetriever,
             resource: Proxy,
-            worker_id: str,
             cooldown: int = 10,
             stop_on_error: bool = True
     ):
         self.storage = storage
         self.task_retriever = task_retriever
         self.resource = resource
-        self.id = worker_id
+        self.id = str(uuid4())
         self.cooldown = cooldown
         self.stop_on_error = stop_on_error
         self.cookies = {}

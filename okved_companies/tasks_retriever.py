@@ -1,20 +1,22 @@
 from os.path import join
 
+from base.task_retriever import TaskRetriever
 from .data_objects import OkvedCompaniesTask
 
 
-class OkvedCompaniesTaskRetriever:
+class OkvedCompaniesTaskRetriever(TaskRetriever):
     def __init__(
             self,
             *args,
             base_url: str,
             n_pages: int,
-            okved: str
+            okved: str,
+            **kwargs
     ):
         self.n_pages = n_pages
         self.okved = okved
         self.base_url = base_url
-        super().__init__(*args)
+        super().__init__(*args, **kwargs)
 
     def create_tasks(self):
         tasks = []
