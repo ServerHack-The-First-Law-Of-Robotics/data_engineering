@@ -7,34 +7,37 @@ class TenderParser():
     def __init__(self):
         pass
 
-    def get_tenders(self, okpds: List[str]):
+    def get_tenders(self, okpds: List[str], page_num = 0):
         headers = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'}
         url = 'https://www.roseltorg.ru/procedures/search?sale=1&status%5B%5D=0&status%5B%5D=1&status%5B%5D=2&status%5B%5D=3&status%5B%5D=4&'
         for okpd in okpds:
             url += 'okpd2%5B%5D=' + okpd + '&'
         url += 'currency=all'
+        if page_num:
+            url += '&page=' + str(page_num) + '&from=' + str(page_num * 10)
         r = requests.get(url, headers=headers)
-        print(r.request.url)
+        # print(r.request.url)
         pages = BeautifulSoup(r.text, 'html.parser').find_all('a', class_='search-results__link')
-        hrefs = [page['href'] for page in pages]
+        hrefs = [page['href'] for page in pages][::2]
         return hrefs
 
     def go_through_pages(self, okpds: List[str], dumpfile_name: str):
         all_hrefs = []
         dumpfile_name = dumpfile_name.replace('/', '')
         page_num = 0
-        while True:
+        while page_num<50:
             try:
-                hrefs = self.get_tenders(okpds, page = page_num)
+                hrefs = self.get_tenders(okpds, page_num = page_num)
                 all_hrefs += hrefs
                 with open(dumpfile_name, 'a') as f:
                     for href in hrefs:
                         f.write(href + '\n')
                 page_num += 1
             except:
-                print(page_num)
                 break
+        print(page_num)
+
         return all_hrefs
 
 

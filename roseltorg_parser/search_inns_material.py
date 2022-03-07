@@ -33,5 +33,17 @@ def parse_category_inns_material(category: str):
     with open('material_inns/{}_inns.json'.format(category), 'w') as f:
         json.dump(inns, f)
 
+    return inns
 
-parse_category_inns_material('аммоний молибденовокислый')
+
+material2inn = {}
+
+with open('material2tenders.json') as f:
+    materials = json.load(f)
+
+for material in materials:
+    print(material)
+    material2inn[material] = parse_category_inns_material(material.replace('/', ''))
+
+with open('material2inns.json', 'w', encoding='utf-8') as f:
+    json.dump(material2inn, f, ensure_ascii=False)

@@ -9,7 +9,7 @@ material2tenders = {}
 for material in material2okpd:
     print(material)
     material_okpd_list = material2okpd[material]
-    onegood_tenders = tenders_parser.go_through_pages(material_okpd_list, 'material_tenders/{}_tenders.txt'.format(material))
+    onegood_tenders = tenders_parser.go_through_pages(material_okpd_list, 'material_tenders/{}_tenders.txt'.format(material.replace('/', '')))
     material2tenders[material] = onegood_tenders
     print()
 
