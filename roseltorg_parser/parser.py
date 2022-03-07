@@ -7,19 +7,15 @@ class TenderParser():
     def __init__(self):
         pass
 
-    def get_tenders(self, okpds: List[str], statuses: List[int] = [0, 1, 2, 3, 4], sale: int = 1, currency: str = 'all',
-                    source: int = 7, page = 0):
-        payload = [('okpd2%5B%5D', okpd) for okpd in okpds] + \
-                  [('sale', sale),
-                   ('currency', currency),
-                   ('source%5B%5D', source)] + \
-                  [('status%5B%5D', status) for status in statuses]
-        if page:
-            payload.append(('page', page))
-            payload.append(('from', page * 10))
+    def get_tenders(self, okpds: List[str]):
         headers = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'}
-        r = requests.get('https://www.roseltorg.ru/procedures/search', params=payload, headers=headers)
+        url = 'https://www.roseltorg.ru/procedures/search?sale=1&status%5B%5D=0&status%5B%5D=1&status%5B%5D=2&status%5B%5D=3&status%5B%5D=4&'
+        for okpd in okpds:
+            url += 'okpd2%5B%5D=' + okpd + '&'
+        url += 'currency=all'
+        r = requests.get(url, headers=headers)
+        print(r.request.url)
         pages = BeautifulSoup(r.text, 'html.parser').find_all('a', class_='search-results__link')
         hrefs = [page['href'] for page in pages]
         return hrefs
