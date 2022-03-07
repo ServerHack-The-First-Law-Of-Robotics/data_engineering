@@ -29,8 +29,6 @@ for j in okved_22197['companies_list']:
 #okved_22197_df #датафрейм с доп компаниями с оквэд 22.19.7
 
 #Перегоняем из json с доп компаниями 2594000
-import pandas as pd
-
 okved_259400 = pd.read_json('okved_259400_companies_not_only_main_okved.json')
 okved_259400 = okved_259400.transpose()
 
