@@ -22,6 +22,7 @@ class TenderParser():
 
     def go_through_pages(self, okpds: List[str], dumpfile_name: str):
         all_hrefs = []
+        dumpfile_name = dumpfile_name.replace('%', '')
         page_num = 0
         while True:
             try:
