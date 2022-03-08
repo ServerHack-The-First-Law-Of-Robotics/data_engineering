@@ -1,5 +1,5 @@
 from typing import Dict
-from json import dump, load
+from json import dump, load, loads
 from os.path import isfile
 
 from base.storage import Storage
@@ -33,5 +33,5 @@ class EgrulStorage(Storage):
 
             decoded = {}
             for key, val in raw.items():
-                decoded[key] = EgrulResult(**val)
+                decoded[key] = EgrulResult(**loads(val))
         return decoded

@@ -28,7 +28,7 @@ def set_up_logging():
 
 def read_proxies(path: str):
     with open(path) as f:
-        proxies = load(f)
+        proxies = f.read().split("\n")
 
     for idx, proxy in enumerate(proxies):
         formatted = f"http://{proxy}"

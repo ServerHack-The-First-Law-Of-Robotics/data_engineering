@@ -16,7 +16,8 @@ if __name__ == "__main__":
     save_pth = "data/okved_companies/okved_259400_companies_not_only_main_okved.json"
 
     storage = OkvedCompaniesStorage(save_pth=save_pth)
-    proxies = read_proxies("resources/proxies.json")
+    proxies = read_proxies("resources/proxy.txt")
+    print("proxies", proxies)
 
     task_retriever = OkvedCompaniesTaskRetriever(
         storage,

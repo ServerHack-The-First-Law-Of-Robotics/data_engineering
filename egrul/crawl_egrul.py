@@ -15,20 +15,15 @@ logger = getLogger(__name__)
 if __name__ == "__main__":
     # рабочая директория должна быть data_engineering - это можно настроить в edit configuration в pycharm
     set_up_logging()
+    proxies = read_proxies("resources/proxy6_net.txt")
 
-    makedirs("data/egrul")
-    makedirs("data/egrul_pdf")
+    makedirs("data/egrul", exist_ok=True)
+    makedirs("data/egrul_pdf", exist_ok=True)
 
     storage = EgrulStorage(parsed_inns_list_path="data/egrul/inns.json")
-    proxies = read_proxies("resources/proxies.json")
-    print("proxies", proxies)
 
     parsed_inns = read_csv("data/okved_companies/okved_companies_data.csv", usecols=["inn"])
     parsed_inns = list(parsed_inns["inn"])
-
-    # TODO: убрать ограничение
-    parsed_inns = parsed_inns[:1]
-    proxies = proxies[:1]
 
     task_retriever = EgrulTaskRetriever(
         storage,
@@ -37,13 +32,17 @@ if __name__ == "__main__":
 
     workers = []
 
-    for resource in proxies:
+    for proxy in proxies:
         worker = EgrulWorker(
             storage,
             task_retriever,
-            resource,
-            cooldown=20,
-            base_pdf_path="data/egrul_pdf/"
+            cooldown=60,
+            resource=proxy,
+            proxy_login_and_password=("Yzhnwe", "ff7E2B"),
+            base_pdf_path="data/egrul_pdf/",
+            use_proxy=True,
+            stop_on_error=False,
+            sleep_after_fail=120
         )
         workers.append(worker)
 
