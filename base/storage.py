@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Dict
+from typing import Dict, Type
 from logging import getLogger
+
+from utils.data_saving import save_results_as_json, read_results_from_json
+
 
 from .data_objects import Task, Result
 
@@ -35,3 +38,24 @@ class Storage(ABC):
     @abstractmethod
     def dump_long_term(self):
         ...
+
+
+class JsonStorage(Storage):
+    def __init__(
+            self,
+            *args,
+            result_class: Type[Result],
+            save_pth: str,
+            **kwargs
+    ):
+        self.save_pth = save_pth
+        self.result_class = result_class
+        super().__init__(*args, **kwargs)
+
+    def dump_long_term(self):
+        # использую функцию, тк считаю, что записывать данные можно и вне Storage. Например, если хотим смержить
+        #  несколько файлов
+        save_results_as_json(self.results, self.save_pth)
+
+    def load_already_existing(self) -> Dict[str, Result]:
+        return read_results_from_json(self.save_pth, self.result_class)

@@ -4,7 +4,8 @@ from logging import getLogger
 from os.path import join
 
 from base.worker import Worker
-from .data_objects import EgrulTask, EgrulResult
+from base.data_objects import INNTask
+from .data_objects import EgrulResult
 
 logger = getLogger(__name__)
 
@@ -19,7 +20,7 @@ class EgrulWorker(Worker):
         super().__init__(*args, **kwargs)
         self.base_pdf_path = base_pdf_path
 
-    async def complete_task(self, session: ClientSession, task: EgrulTask) -> EgrulResult:
+    async def complete_task(self, session: ClientSession, task: INNTask) -> EgrulResult:
         inn = task.inn
         resp = None
 

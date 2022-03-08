@@ -19,10 +19,16 @@ class ParsePDF:
         if regex_res is None:
             return None
         end = regex_res.end() + 1
-
-        tail = self.text[end:]
-        space = tail.find(' ')
-        return tail[:space]
+        try:
+            tail = self.text[end:]
+            name_start = tail.index('"')
+            after_name_start = tail[name_start + 1:]
+            name_end = after_name_start.index('"')
+            name = tail[:name_start] + after_name_start[:name_end]
+        except Exception as e:
+            name = None
+        print("name", name)
+        return name
 
     def get_soz(self):
         return 'Фонда социального страхования' in self.text

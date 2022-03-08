@@ -1,16 +1,17 @@
-from typing import Dict
+from typing import Dict, Type
 from json import dump, load
 from logging import getLogger
 from os.path import isfile
 
-from .data_objects import OkvedCompaniesResult
+from base.data_objects import Result
 
 logger = getLogger(__name__)
 
 
 def read_results_from_json(
-        pth: str
-) -> Dict[str, OkvedCompaniesResult]:
+        pth: str,
+        result_class: Type[Result]
+) -> Dict[str, Result]:
     if not isfile(pth):
         return {}
 
@@ -19,13 +20,13 @@ def read_results_from_json(
 
     encoded_data = {}
     for key, page in results.items():
-        page_data_obj = OkvedCompaniesResult(**page)
+        page_data_obj = result_class(**page)
         encoded_data[key] = page_data_obj
     return encoded_data
 
 
 def save_results_as_json(
-        results: Dict[str, OkvedCompaniesResult],
+        results: Dict[str, Result],
         pth: str
 ):
     json_converted = {}

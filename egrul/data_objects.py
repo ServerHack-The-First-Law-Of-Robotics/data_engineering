@@ -1,11 +1,7 @@
 from typing import Optional
 from pydantic import Field
 
-from base.data_objects import Task, Result
-
-
-class EgrulTask(Task):
-    inn: str = ...
+from base.data_objects import Result
 
 
 class EgrulResult(Result):

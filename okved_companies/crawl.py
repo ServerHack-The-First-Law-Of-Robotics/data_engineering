@@ -5,7 +5,7 @@ from utils import set_up_logging, read_proxies
 from base.crawler import Crawler
 from okved_companies.tasks_retriever import OkvedCompaniesTaskRetriever
 from okved_companies.worker import OkvedCompaniesWorker
-from okved_companies.storage import OkvedCompaniesStorage
+from okved_companies.storage import JsonStorage
 
 logger = getLogger(__name__)
 
@@ -13,17 +13,17 @@ logger = getLogger(__name__)
 if __name__ == "__main__":
     set_up_logging()
 
-    save_pth = "data/okved_companies/okved_259400_companies_not_only_main_okved.json"
+    save_pth = "data/okved_companies/okved_221900_companies_not_only_main_okved.json"
 
-    storage = OkvedCompaniesStorage(save_pth=save_pth)
+    storage = JsonStorage(save_pth=save_pth)
     proxies = read_proxies("resources/proxy.txt")
     print("proxies", proxies)
 
     task_retriever = OkvedCompaniesTaskRetriever(
         storage,
-        base_url="https://www.rusprofile.ru/codes/259400",
-        n_pages=394,
-        okved="25.94"
+        base_url="https://www.rusprofile.ru/codes/221900",
+        n_pages=288,
+        okved="22.19"
     )
     workers = []
 

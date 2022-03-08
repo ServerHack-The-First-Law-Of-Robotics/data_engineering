@@ -14,3 +14,11 @@ class Result(BaseModel):
     raw_response: Optional[str] = None
     is_error: bool = ...
     status_code: int = Field(200, nullable=True)
+
+
+class INNTask(Task):
+    inn: str = ...
+
+
+class OGRNTask(Task):
+    ogrn: str = ...

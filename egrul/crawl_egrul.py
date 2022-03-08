@@ -5,7 +5,7 @@ from os import makedirs
 
 from utils import set_up_logging, read_proxies
 from base.crawler import Crawler
-from egrul.task_retriever import EgrulTaskRetriever
+from base.task_retriever import INNTaskRetriever
 from egrul.worker import EgrulWorker
 from egrul.storage import EgrulStorage
 
@@ -22,10 +22,11 @@ if __name__ == "__main__":
 
     storage = EgrulStorage(parsed_inns_list_path="data/egrul/inns.json")
 
-    parsed_inns = read_csv("data/okved_companies/okved_companies_data.csv", usecols=["inn"])
-    parsed_inns = list(parsed_inns["inn"])
+    parsed_inns = list(read_csv("data/tenders_sber_22_19_aggregates.csv", usecols=["inn"])["inn"])
+    parsed_inns += list(read_csv("data/tenders_sber_25_94_aggregates.csv", usecols=["inn"])["inn"])
 
-    task_retriever = EgrulTaskRetriever(
+    print("len parsed_inns", len(parsed_inns))
+    task_retriever = INNTaskRetriever(
         storage,
         inns=parsed_inns
     )
