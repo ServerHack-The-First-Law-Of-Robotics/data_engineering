@@ -33,7 +33,8 @@ if __name__ == "__main__":
             task_retriever,
             resource,
             cooldown=20,
-            only_main_okved=True
+            only_main_okved=False,
+            use_proxy=True
         )
         workers.append(worker)
 

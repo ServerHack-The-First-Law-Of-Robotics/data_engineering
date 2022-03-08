@@ -1,7 +1,8 @@
 from typing import List
 from logging import getLogger
 from bs4 import BeautifulSoup
-
+from aiohttp import ClientSession
+from aiohttp.client_exceptions import ClientProxyConnectionError
 from .data_objects import OkvedCompaniesTask, OkvedCompaniesResult, RusprofileCompanyData
 from base.worker import Worker
 
@@ -20,21 +21,29 @@ class OkvedCompaniesWorker(Worker):
         else:
             # используется, чтобы получать даже те компании, у которых нужный ОКВЭД - не основной. Мы делаем это, чтобы
             #  получить все компании, которые могут заниматься нужным нам производством
-            cookies = {"okved_all", "yes"}
+            cookies = {"okved_all": "yes"}
 
         super().__init__(*args, **kwargs, cookies=cookies)
 
-    async def complete_task(self, task: OkvedCompaniesTask) -> OkvedCompaniesResult:
-        async with self.get_response(task.url) as resp:
-            text = await resp.text()
-            if resp.status != 200:
-                result = OkvedCompaniesResult(
-                    is_error=True,
-                    raw_response=text,
-                    okved=task.okved,
-                    status_code=resp.status
-                )
-                return result
+    async def complete_task(self, session: ClientSession, task: OkvedCompaniesTask) -> OkvedCompaniesResult:
+        try:
+            async with self.get_response(session, task.url) as resp:
+                text = await resp.text()
+                if resp.status != 200:
+                    result = OkvedCompaniesResult(
+                        is_error=True,
+                        raw_response=text,
+                        okved=task.okved,
+                        status_code=resp.status
+                    )
+                    return result
+        except ClientProxyConnectionError:
+            logger.error("Ошибка в прокси", exc_info=True)
+            return OkvedCompaniesResult(
+                is_error=True,
+                raw_response=None,
+                okved=task.okved
+            )
 
         try:
             html = BeautifulSoup(text, "html.parser")

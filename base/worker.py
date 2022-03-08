@@ -36,7 +36,8 @@ class Worker(ABC):
         self.sleep_after_fail = sleep_after_fail
 
         if cookies is None:
-            self.cookies = {}
+            cookies = {}
+        self.cookies = cookies
         self.use_proxy = use_proxy
 
     async def run(self):
@@ -55,6 +56,8 @@ class Worker(ABC):
                     await sleep(self.sleep_after_fail)
                 else:
                     await sleep(self.cooldown)
+            else:
+                logger.info(f"Для worker {self.id} не осталось задач")
 
     @abstractmethod
     async def complete_task(self, session: ClientSession, task: Task) -> Result:
